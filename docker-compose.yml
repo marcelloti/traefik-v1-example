@@ -3,7 +3,7 @@ version: "3"
 services:
   proxy:
     image: traefik:1.7.15
-    restart: "no"
+    restart: "unless-stopped"
     # command: --docker --logLevel=DEBUG
     stdin_open: true
     tty: true
@@ -16,31 +16,34 @@ services:
       - ./logs:/var/log/traefik
       - ./traefik.toml:/etc/traefik/traefik.toml
       # - ./rules.toml:/toml/rules.toml
-      - ./acme.json:/acme.json
-    # environment:
+      - ${PWD}/certs:/etc/traefik/certs
+      # environment:
         # DO_AUTH_TOKEN: SOME_TOKEN
     labels:
-        # Display this service on Traefik dashboard
-        - "traefik.enable=true"
-        
-        # Network name used by backed
-        - "traefik.docker.network=web"
-        
-        # Name of backed
-        - "traefik.backend=traefik"
-        
-        # Put in here your domain
-        - "traefik.frontend.rule=Host:www.monitor.local"
-        
-        # Traefik default port 
-        - "traefik.port=8080"
-        
-        # Traefik Authentication
-        # User: admin / Password: admin
-        #
-        # You can generate this with: htpasswd -n -B My_User
-        # Tip: Escape all "$" characters putting another "$" before it
-        - "traefik.frontend.auth.basic=admin:$$2y$$05$$6FoqybHOsvxpVQa6S/zs8.lF4mqdnWhesUhPWF3eGhRANhIvkm5WC"
+      # Display this service on Traefik dashboard
+      - "traefik.enable=true"
+
+      # Network name used by backed
+      - "traefik.docker.network=web"
+
+      # Name of backed
+      - "traefik.backend=traefik"
+
+      # Put in here your domain
+      - "traefik.frontend.rule=Host:www.monitor.local"
+
+      # Traefik default port 
+      - "traefik.port=8080"
+
+      # Enable https        
+      # - "traefik.frontend.entryPoints=https"
+
+      # Traefik Authentication
+      # User: admin / Password: admin
+      #
+      # You can generate this with: htpasswd -n -B My_User
+      # Tip: Escape all "$" characters putting another "$" before it
+      - "traefik.frontend.auth.basic=admin:$$2y$$05$$6FoqybHOsvxpVQa6S/zs8.lF4mqdnWhesUhPWF3eGhRANhIvkm5WC"
     networks:
       - web
       - internal
@@ -48,7 +51,7 @@ services:
   whoami:
     image: emilevauge/whoami
     expose:
-        - "8000"
+      - "8000"
     restart: always
     labels:
       - "traefik.enable=true"
@@ -74,7 +77,7 @@ services:
       #- "traefik.http.middlewares.limit.buffering.retryExpression=IsNetworkError() && Attempts() < 4"
       #- "traefik.http.middlewares.test-compress.compress=true"
       #- "traefik.http.middlewares.test-ratelimit.ratelimit.average=100"
-      #- "traefik.http/var/log/traefik.log.middlewares.test-ratelimit.ratelimit.burst=50"
+      #- "traefik.http.middlewares.test-ratelimit.ratelimit.burst=50"
       #- "traefik.http.middlewares.test-ratelimit.ratelimit.sourcecriterion.ipstrategy.excludedips=127.0.0.1/32"
       # - "traefik.http.middlewares.test-redirectscheme.redirectscheme.permanent=https"
       # - "traefik.http.middlewares.test-redirectscheme.redirectscheme.scheme=https"

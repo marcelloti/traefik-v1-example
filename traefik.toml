@@ -34,6 +34,17 @@ defaultEntryPoints = ["http", "https"]
 #  [acme.httpChallenge]
 #    entryPoint = "http"
 
+# If you want to generate SSL certificate with Traefik,
+# put in the lines below the domains
+#
+# Example: domain.com
+#  [[acme.domains]]
+#    main = "domain.com"
+#    sans = ["www.domain.com","domain.com","mirror.domain.com"]
+#
+# Repeat the [[acme.domain]] section if you want to add other domain
+
+
 # Link docker to Traefik
 [docker]
   endpoint = "unix:///var/run/docker.sock"
