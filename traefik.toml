@@ -1,0 +1,42 @@
+
+# Enable debug mode
+logLevel = "DEBUG"
+
+defaultEntryPoints = ["http", "https"]
+
+# Enable dashboard
+[api]
+
+# Try again in case of networks errors
+[retry]
+
+[entryPoints]
+  [entryPoints.http]
+     address = ":80"
+  [entryPoints.traefik]
+     address = ":8080"
+
+# Enable Https
+#  [entryPoints.http.redirect]
+#     entryPoint = "https"
+#  [entryPoints.https]
+#     address = ":443"
+#  [entryPoints.https.tls]
+
+# Enable LetsEncrypt
+# [acme]
+#  email = "contact@example.com"
+#  storage = "acme.json"
+#  entryPoint = "https"
+#  acmeLogging = true
+#  OnHostRule = true
+#  onDemand = false
+#  [acme.httpChallenge]
+#    entryPoint = "http"
+
+# Link docker to Traefik
+[docker]
+  endpoint = "unix:///var/run/docker.sock"
+  watch = true  
+  # Do not expose containers by default to Traefik
+  exposedByDefault = false
