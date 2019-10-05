@@ -21,7 +21,7 @@ cd traefik-v1-example
 
 docker-compose -p example up -d
 
-### 5- Access the traefik Dashboard
+### 5- Access the Traefik Dashboard
 http://www.monitor.local/dashboard 
 
 User: admin / Password: admin
