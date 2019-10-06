@@ -44,6 +44,10 @@ defaultEntryPoints = ["http", "https"]
 #
 # Repeat the [[acme.domain]] section if you want to add other domain
 
+# Server with certificates for non production environments
+# (comment this if you want to get production certificates - careful:
+# limit of 50 per week)
+caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
 
 # Link docker to Traefik
 [docker]
